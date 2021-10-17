@@ -9,7 +9,7 @@ import java.util.concurrent.Future;
 public class KafkaExerciseProducer implements AutoCloseable, Producer<Integer, String> {
   private final KafkaProducer<Integer, String> producer;
 
-  private final KafkaProperties kafkaProperties;
+  private final KafkaProducerProperties kafkaProducerProperties;
 
   public KafkaExerciseProducer() {
     this(
@@ -20,17 +20,12 @@ public class KafkaExerciseProducer implements AutoCloseable, Producer<Integer, S
   }
 
   public KafkaExerciseProducer(List<String> bootStrapServers, String keySerializer, String valueSerializer) {
-    kafkaProperties = new KafkaProperties(bootStrapServers, keySerializer, valueSerializer);
-    producer = new KafkaProducer<>(kafkaProperties.toProperties());
+    kafkaProducerProperties = new KafkaProducerProperties(bootStrapServers, keySerializer, valueSerializer);
+    producer = new KafkaProducer<>(kafkaProducerProperties.toProperties());
   }
 
-  @Override
-  public void close() {
-    producer.close();
-  }
-
-  public KafkaProperties getKafkaProperties() {
-    return kafkaProperties;
+  public KafkaProducerProperties getKafkaProducerProperties() {
+    return kafkaProducerProperties;
   }
 
   @Override
@@ -38,6 +33,11 @@ public class KafkaExerciseProducer implements AutoCloseable, Producer<Integer, S
     ProducerRecord<Integer, String> record = new ProducerRecord<>(topic.getName(), key, value);
     Future<RecordMetadata> recordMetadataFuture = producer.send(record);
     RecordMetadata metadata = recordMetadataFuture.get();
-    System.out.printf("Success partition: %d, offset: %d%n", metadata.partition(), metadata.offset());
+    System.out.printf("Success topic: %s, partition: %d, offset: %d%n", topic.getName(), metadata.partition(), metadata.offset());
+  }
+
+  @Override
+  public void close() {
+    producer.close();
   }
 }
