@@ -7,17 +7,17 @@ import java.util.Collections;
 import java.util.List;
 
 public class KafkaExerciseConsumer implements AutoCloseable, Consumer {
-  private KafkaConsumer<Integer, String> consumer;
+  private final KafkaConsumer<Integer, String> consumer;
 
-  private KafkaConsumerProperties kafkaConsumerProperties;
+  private final KafkaConsumerProperties kafkaConsumerProperties;
 
   public KafkaExerciseConsumer() {
     this(
-            List.of("localhost:50001", "localhost:50002", "localhost:50003"),
+            List.of("localhost:32000"),
             "org.apache.kafka.common.serialization.IntegerDeserializer",
             "org.apache.kafka.common.serialization.StringDeserializer",
             false,
-            "consumer-group-1"
+            "consumer-group-0"
     );
   }
 

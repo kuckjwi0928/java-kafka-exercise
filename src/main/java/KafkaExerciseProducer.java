@@ -13,7 +13,7 @@ public class KafkaExerciseProducer implements AutoCloseable, Producer<Integer, S
 
   public KafkaExerciseProducer() {
     this(
-      List.of("localhost:50001", "localhost:50002", "localhost:50003"),
+      List.of("localhost:32000"),
       "org.apache.kafka.common.serialization.IntegerSerializer",
       "org.apache.kafka.common.serialization.StringSerializer"
     );
